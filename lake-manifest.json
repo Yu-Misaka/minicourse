@@ -1,7 +1,7 @@
 {"version": "1.1.0",
  "packagesDir": ".lake/packages",
  "packages":
- [{"url": "https://github.com/slashbade/reaper_tac",
+ [{"url": "https://github.com/slashbade/reaper_tac.git",
    "type": "git",
    "subDir": null,
    "scope": "",
