@@ -12,7 +12,7 @@ example (a b c : ℝ) : a * b * c = b * c * a := by
   rw [mul_comm]
 
 
-lemma div_eq_if_eq_mul {a b c : ℝ} (h : c ≠ 0) : a / b = c → a = c * b := by
+lemma div_eq_of_eq_mul₀ {a b c : ℝ} (h : c ≠ 0) : a / b = c → a = c * b := by
   intro h₁
   rw [← h₁] at h
   rw [div_ne_zero_iff] at h
@@ -32,7 +32,7 @@ theorem gaokao_triangle (α β m : ℝ) (h₁ : cos (α + β) = m) (h₂ : tan �
   cos (α - β) = -3 * m := by
   rw [tan_eq_sin_div_cos, tan_eq_sin_div_cos] at h₂
   rw [mul_comm_div, div_div, mul_div] at h₂
-  apply div_eq_if_eq_mul at h₂
+  apply div_eq_of_eq_mul₀ at h₂
   rw [cos_add] at h₁
   rw [h₂] at h₁
   rw [cos_sub]
