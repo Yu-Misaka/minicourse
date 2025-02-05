@@ -145,4 +145,4 @@ theorem set_example {A B : Set ℝ} (h₁ : A = {x | -5 < x ^ 3 ∧ x ^ 3 < 5})
   cases' h with h h
   any_goals {simp [h]; repeat constructor; repeat linarith}
 
-  -- #herald "Suppose $A= {x | -5 < x^3 < 5}$, $B = {-3, -1, 0, 2, 3}$, find $A U B. Answer is ${-1, 0}"
+-- #herald "Suppose $A= {x | -5 < x^3 < 5}$, $B = {-3, -1, 0, 2, 3}$, find $A U B. Answer is ${-1, 0}"
