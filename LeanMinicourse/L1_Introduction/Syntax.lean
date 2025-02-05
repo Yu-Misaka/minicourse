@@ -1,10 +1,12 @@
 import Mathlib
+import ReaperTac
 
 open Nat
 /-
 # Dependent Type theory
 
-A framework for formalizing mathematics and logic reasoning. It is based on the idea that each value has a type.
+A framework for formalizing mathematics and logic reasoning.
+It is based on the idea that each value has a type.
 
 -/
 -- Display the type of your value.
@@ -59,7 +61,8 @@ def f_real (x : ℝ) :=
 #check f_real
 
 
-/- The most important type in Lean is the Proposition type. This how you can construct theorems. A proof of a proposition is a value of that type. -/
+/- The most important type in Lean is the Proposition type, which constructs theorems.
+A proof of a proposition is a value of that type. -/
 
 /- This is a very simple proposition. -/
 def easy_prop : Prop :=
@@ -82,7 +85,8 @@ def epsilon_delta_limit (f : ℝ → ℝ) (l : ℝ) (a : ℝ) :=
 
 #check epsilon_delta_limit
 
-/-  -/
+/- This theorem shows the limit of the function `f_real` at `3` is `6`
+We will not prove it here. -/
 theorem epsilon_delta_limit_of_f_real : epsilon_delta_limit f_real 3 6 := sorry
 
 #check epsilon_delta_limit_of_f_real
@@ -122,26 +126,23 @@ example : ∀ m n : Nat, Even n → Even (m * n) := by
 example : ∀ m n : Nat, Even n → Even (m * n) := by
   intros; simp [*, parity_simps]
 
-/-- 2024 Gaokao -/
-example {A B : Set ℝ} (h₁ : A = {x | -5 < x ^ 3 ∧ x ^ 3 < 5}) (h₂ : B = {-3, -1, 0, 2, 3}) : A ∩ B = {-1, 0} := by
+/-- 2024 Gaokao Xinkebiao I - 1: Suppose $A= {x | -5 < x^3 < 5}$, $B = {-3, -1, 0, 2, 3}$, find $A U B. Answer is ${-1, 0}$
+已知集合 $A= {x | -5 < x^3 < 5}$, $B = {-3, -1, 0, 2, 3}$，求 $A U B$，答案为 ${-1, 0}$-/
+theorem set_example {A B : Set ℝ} (h₁ : A = {x | -5 < x ^ 3 ∧ x ^ 3 < 5})
+  (h₂ : B = {-3, -1, 0, 2, 3}) : A ∩ B = {-1, 0} := by
+  -- To prove equality of sets is to prove that they have the same elements.
   ext x
   constructor
-  · intro h
-    rw [Set.mem_inter_iff] at h
-    rcases h with ⟨hA, hB⟩
-    simp [h₂] at *
-    simp [h₁] at *
-    repeat' cases' hB with h_eq hB
-    · simp [h_eq] at *; linarith
-    · simp [h_eq] at *
-    · simp [h_eq] at *
-    · simp [h_eq] at *; linarith
-    · linarith
+  all_goals simp [h₁, h₂] at *
+  · intro hA hB h
+    -- try each possibility of `x`
+    repeat' cases' h with h_eq h
+    any_goals
+    { repeat simp [h_eq] at *
+      repeat linarith }
   intro h
-  simp [h₁, h₂] at *
+  -- try each possibility of `x`
   cases' h with h h
-  all_goals {simp [h]; repeat constructor; linarith; linarith}
+  any_goals {simp [h]; repeat constructor; repeat linarith}
 
-
-
-#min_imports
+  -- #herald "Suppose $A= {x | -5 < x^3 < 5}$, $B = {-3, -1, 0, 2, 3}$, find $A U B. Answer is ${-1, 0}"
