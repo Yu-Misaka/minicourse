@@ -1,7 +1,7 @@
 import Mathlib.Analysis.RCLike.Basic
 import Mathlib.Data.Complex.Trigonometric
 import ReaperTac
-import Paperproof
+-- import Paperproof
 
 open Real
 

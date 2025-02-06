@@ -10,7 +10,7 @@ package "lean_minicourse" where
 
 require "leanprover-community" / "mathlib" @ git "v4.16.0"
 require reaper_tac from git "https://github.com/slashbade/reaper_tac.git"
-require Paperproof from git "https://github.com/Paper-Proof/paperproof.git"@"main"/"lean"
+-- require Paperproof from git "https://github.com/Paper-Proof/paperproof.git"@"main"/"lean"
 -- require reaper_tac from git "../reaper_tac"
 @[default_target]
 lean_lib «LeanMinicourse» where
