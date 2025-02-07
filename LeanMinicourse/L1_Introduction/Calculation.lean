@@ -44,6 +44,13 @@ example (a b c : ℝ) : a * b * c = b * c * a := by
   rw [mul_comm]
   -- rw [mul_comm, mul_assoc]
 
+/- Use fact from local contexts `h` `h'` -/
+example (a b c d e f : ℝ) (h : a * b = c * d) (h' : e = f) : a * (b * e) = c * (d * f) := by
+  rw [h']
+  rw [← mul_assoc]
+  rw [h]
+  rw [mul_assoc]
+
 
 /- TODEMO -/
 /- A `calc` block allows you to proof an equality

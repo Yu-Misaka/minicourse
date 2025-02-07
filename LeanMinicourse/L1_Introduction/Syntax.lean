@@ -172,4 +172,4 @@ def set_example (A B : Set ℝ) (h₁ : A = {x | -5 < x ^ 3 ∧ x ^ 3 < 5})
 
 /- 2024 Gaokao Xinkebiao I - 4
 Given cos(α+β)=m, tan(α)tan(β)=2, show that cos(α-β)=-3m -/
-#herald "Given cos(α+β)=m, tan(α)tan(β)=2, show that cos(α-β)=-3m"
+-- #herald "Given cos(α+β)=m, tan(α)tan(β)=2, show that cos(α-β)=-3m"
