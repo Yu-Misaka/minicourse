@@ -1,6 +1,18 @@
+/-
+# Basic Calculation in Field of Real Number
+
+In this file, we will expand on several basic topics
+to make it easier to prove by calculation.
+
+1. Basic tactics `rw`, `rfl`, `apply`, `exact`
+2. Use of `calc` block
+3. Simple rule-based simplifiers `group`, `ring`,
+   and `field_simp`
+
+-/
 import Mathlib.Analysis.RCLike.Basic
 import Mathlib.Data.Complex.Trigonometric
-import ReaperTac
+-- import ReaperTac
 -- import Paperproof
 
 open Real
@@ -51,7 +63,6 @@ example (a b c d e f : ℝ) (h : a * b = c * d) (h' : e = f) : a * (b * e) = c *
   rw [h]
   rw [mul_assoc]
 
-
 /- TODEMO -/
 /- A `calc` block allows you to proof an equality
 or inequality step by step. -/
@@ -62,10 +73,11 @@ example (a b : ℝ) : (a + b) * (a + b) = a * a + 2 * (a * b) + b * b :=
     _ = a * a + (b * a + a * b) + b * b := by
       rw [← add_assoc, add_assoc (a * a)]
     _ = a * a + 2 * (a * b) + b * b := by
+    -- use `_ = _ := by` to let Lean deduce the goal
       rw [mul_comm b a, ← two_mul]
 
-/- `ring` is a tactic that can solve equations involving rings
-First fact about ℝ, it is a ring. -/
+/- `ring` is a tactic that can solve equations within commutative rings
+ℝ is a ring. -/
 example : (a + b) * (a + b) = a * a + 2 * (a * b) + b * b := by
   ring
 
@@ -94,6 +106,7 @@ lemma div_eq_of_eq_mul₀ {a b c : ℝ} (h : c ≠ 0) : a / b = c → a = c * b 
 /- `field_simp` is a carefully crafted tactic to solve problem on field. -/
 lemma div_eq_of_eq_mul₀' {a b c : ℝ} (h : b ≠ 0) : a / b = c → a = c * b := by
   intro h₁
+  -- rw [div_eq_iff h] at h₁
   field_simp at h₁
   exact h₁
 

@@ -1,4 +1,5 @@
 import Mathlib.Analysis.RCLike.Basic
+import Mathlib.Data.Complex.Trigonometric
 import ReaperTac
 
 open Nat
@@ -7,6 +8,9 @@ open Nat
 
 A framework for formalizing mathematics and logic reasoning.
 It is based on the idea that each value has a type.
+alpha.reaslab.io
+live.lean-lang.org
+
 -/
 
 /-
@@ -49,6 +53,7 @@ def finset_B : Finset ℕ := {2, 3}
 def set_A : Set ℕ := {1, 2}
 def set_B : Set ℕ := {2, 3}
 #check set_A ∪ set_B
+#check set_A ∩ set_B
 #eval finset_A ∪ finset_B
 def list_two : List ℕ := [1, 2]
 #eval list_two
@@ -172,4 +177,12 @@ def set_example (A B : Set ℝ) (h₁ : A = {x | -5 < x ^ 3 ∧ x ^ 3 < 5})
 
 /- 2024 Gaokao Xinkebiao I - 4
 Given cos(α+β)=m, tan(α)tan(β)=2, show that cos(α-β)=-3m -/
--- #herald "Given cos(α+β)=m, tan(α)tan(β)=2, show that cos(α-β)=-3m"
+open BigOperators Real Nat Topology
+theorem cos_sub_cos_of_cos_add_cos
+(m : ℝ) (α β : ℝ)
+(h₁ : m = cos (α + β))
+(h₂ : tan α * tan β = 2) :
+cos (α - β) = -3 * m :=  by sorry
+
+open BigOperators Real Nat Topology
+theorem cos_sub_of_cos_add_eq_m {α β : ℝ} (m : ℝ) (h : Real.cos (α + β) = m) (h' : Real.tan α * Real.tan β = 2) : Real.cos (α - β) = -3 * m :=  by sorry
