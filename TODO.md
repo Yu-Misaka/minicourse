@@ -7,3 +7,4 @@
     3. LeanSearch
     4. Herald autoformalization tool
 3. Symbolic tools for formal and informal math
+4. General formatting tips for Lean 4
