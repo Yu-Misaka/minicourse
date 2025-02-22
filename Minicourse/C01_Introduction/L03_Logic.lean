@@ -44,7 +44,8 @@ example (ε : ℝ) : ε > 0 → 1 / ε > 0 := by
   exact hε
 
 example : ∀ x : ℝ, x > 0 → |x| = x := by
-  intro x hx
+  intro x
+  intro hx
   rw [abs_of_pos hx]
 
 example (s : Set α) : s ⊆ s := by
@@ -53,10 +54,10 @@ example (s : Set α) : s ⊆ s := by
 
 /- Notice that to prove this theorem, we are actually constructing a
 function type. -/
-example (ε : ℝ) : ε > 0 → 1 / ε > 0 := fun hε => by
-  rw [gt_iff_lt] at hε ⊢
+example (ε : ℝ) : ε > 0 → 1 / ε > 0 := fun he => by
+  rw [gt_iff_lt] at he ⊢
   rw [one_div_pos]
-  exact hε
+  exact he
 
 /- This really shortens the proof! -/
 example : ∀ x : ℝ, x > 0 → |x| = x := fun _ hx => abs_of_pos hx
@@ -154,16 +155,7 @@ theorem pretty_limit_of_one_div_x_eq_zero :
 /- Your turn: show that lim x → 0, 2 * x = 0 -/
 theorem limit_of_two_mul_x_eq_zero :
   epsilon_delta_limit (fun x => 2 * x) 0 0 := by
-  intro ε hε
-  use ε / 2
-  constructor
-  · simp [hε]
-  intro x hx
-  simp at *
-  have := hx.right
-  calc
-    _ = 2 * |x| := by simp [abs_mul]
-    _ < ε := by linarith
+  sorry
 
 /-
 ## Deal with Contraposition
@@ -192,13 +184,13 @@ Use `induction` tactic to prove theorems. -/
 define functions (by matching) or to prove theorems about `ℕ`.
 Here is how we define the factorial function.
 -/
-def fac : ℕ → ℕ :=
-  fun n =>
-    match n with
-    | Nat.zero => 1
-    | Nat.succ n => (n + 1) * fac n
-  -- | 0 => 1
-  -- | n + 1 => (n + 1) * fac n
+def fac : ℕ → ℕ
+  -- fun n =>
+  --   match n with
+  --   | Nat.zero => 1
+  --   | Nat.succ n => (n + 1) * fac n
+  | 0 => 1
+  | n + 1 => (n + 1) * fac n
 
 theorem fac_pos (n : ℕ) : fac n > 0 := by
   induction' n with k hk
@@ -208,7 +200,8 @@ theorem fac_pos (n : ℕ) : fac n > 0 := by
 theorem sum_of_id' (n : ℕ) : ∑ i ∈ Finset.range n, i = n * (n - 1) / 2 := by
   induction' n with k hk
   · simp
-  rw [Finset.sum_range_succ, hk]
+  rw [Finset.sum_range_succ]
+  rw [hk]
   rw [add_comm _ k, ← Nat.mul_add_div, mul_comm 2 k, ← left_distrib]
   rw [mul_comm k, Nat.add_sub_cancel]
   congr 1
@@ -220,8 +213,7 @@ theorem sum_of_id' (n : ℕ) : ∑ i ∈ Finset.range n, i = n * (n - 1) / 2 := 
 /- A much easier approach from Mathlib -/
 theorem sum_id (n : ℕ) : ∑ i ∈ Finset.range (n + 1), i = n * (n + 1) / 2 := by
   symm; apply Nat.div_eq_of_eq_mul_right (by norm_num : 0 < 2)
-  sorry
-  -- induction' n with n ih
-  -- · simp
-  -- rw [Finset.sum_range_succ, mul_add 2, ← ih]
-  -- ring
+  induction' n with n ih
+  · simp
+  rw [Finset.sum_range_succ, mul_add 2, ← ih]
+  ring
