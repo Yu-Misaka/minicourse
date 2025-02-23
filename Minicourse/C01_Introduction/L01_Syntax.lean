@@ -1,6 +1,6 @@
 import Mathlib.Analysis.RCLike.Basic
 import Mathlib.Data.Complex.Trigonometric
-import ReaperTac
+-- import ReaperTac
 
 open Nat
 /-
@@ -157,20 +157,42 @@ Suppose $A= {x | -5 < x^3 < 5}$, $B = {-3, -1, 0, 2, 3}$, find $A U B.
 Answer is ${-1, 0}$ -/
 def set_example (A B : Set ℝ) (h₁ : A = {x | -5 < x ^ 3 ∧ x ^ 3 < 5})
   (h₂ : B = {-3, -1, 0, 2, 3}) : A ∩ B = {-1, 0} := by
-  -- To prove equality of sets is to prove that they have the same elements.
   ext x
-  constructor
-  all_goals simp [h₁, h₂] at *
-  · intro hA hB h
-    -- try each possibility of `x`
-    repeat' cases' h with h_eq h
-    any_goals
-    { repeat simp [h_eq] at *
-      repeat linarith }
-  intro h
-  -- try each possibility of `x`
-  cases' h with h h
-  any_goals {simp [h]; repeat constructor; repeat linarith}
+  apply Iff.intro
+  · intro hAB
+    simp [h₁, h₂] at hAB ⊢
+    
+    cases' hAB with hA hB
+    rcases hB with h1 | h2 | h3 | h4 | h5
+    · rw [h1] at hA
+      linarith
+    · tauto
+    · tauto
+    · rw [h4] at hA
+      linarith
+    · rw [h5] at hA
+      linarith
+  · intro h
+    simp [h₁, h₂] at h ⊢
+    cases' h with h1 h2
+    · rw [h1]
+      norm_num
+    · rw [h2]
+      norm_num
+-- -- To prove equality of sets is to prove that they have the same elements.
+  -- ext x
+  -- constructor
+  -- all_goals simp [h₁, h₂] at *
+  -- · intro hA hB h
+  --   -- try each possibility of `x`
+  --   repeat' cases' h with h_eq h
+  --   any_goals
+  --   { repeat simp [h_eq] at *
+  --     repeat linarith }
+  -- intro h
+  -- -- try each possibility of `x`
+  -- cases' h with h h
+  -- any_goals {simp [h]; repeat constructor; repeat linarith}
 
 
 
