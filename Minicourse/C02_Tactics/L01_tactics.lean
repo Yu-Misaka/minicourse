@@ -6,25 +6,58 @@ In this lecture, we first dive into some more advanced tactics. Then explain abo
 organiztion of Lean project.
 -/
 
-/- simp -/
+/- simp
+Short hand for simplify
+You can manually add `simp` lemmas to let it become more powerful!
+-/
+example (x : ℝ) : x + 0 = x := by simp
 
-/- linarith -/
+@[simp]
+theorem my_real_square (x : ℝ) : x ^ 2 = x * x := by linarith
+
+@[simp]
+theorem my_real_two_add (x : ℝ) : 2 * x = x + x := by linarith 
+
+example (x : ℝ) : x ^ 2 = x * x := by simp
+
+example (x : ℝ) : 2 * x ^ 2 = x * x + x * x := by simp
+
+/- linarith
+Short hand for linear inequality arithmetics
+Use a basic rule set to solve ineqaulity by finding 'counterexample'
+-/
 example (x : ℝ) (x_pos : x > 0) : 2 * x + 1 > x + 1 := by
   linarith
 
-/- norm_num -/
+/- norm_num
+Short hand for normalize numerical expressions
+Use simplify rules to tackle with + - * ⁻¹ in common number fields
+-/
+example (x : ℝ) : x ^ 2  + x * x = 2 * x ^ 2 := by norm_num
 
-/- tauto -/
+/- tauto 
+Short hand for tautology. It does very good at complex logic connectors
+-/
 example (x : ℝ) (x_pos : x > 0) : (x > 0 ∧ x ≠ 0) ∨ x = 0 := by tauto
 
-/- omega -/
+/- omega
+Solve integer / natural number problems.
+But its current capability is very limited.
+-/
 example (n : ℕ) : 2 * n = n * 2 := by omega
 
 example (n : ℕ) : n * 2 / 2 = n := by omega
 
-/- aesop -/
+/- aesop 
+Search proofs tactic-wise by tree search
+-/
+example (n : ℕ) : n * 2 / 2 = n := by aesop
 
-/- Structures and typeclasses -/
+
+/- 
+
+# Structures and typeclasses 
+-/
 structure Point (α : Type u) where
   x : α
   y : α
@@ -35,8 +68,8 @@ theorem my_point_two_two_eq_two : my_point_two_two.x = 2 := by rfl
 
 /- Positive points -/
 structure PositivePoint where
-  x : ℝ
-  y : ℝ
+  x : ℚ
+  y : ℚ
   x_pos : x > 0
   y_pos : y > 0
 
@@ -141,4 +174,80 @@ def cubic_class [inst : MyGroupClass α] (x : α) : α := inst.mul x (inst.mul x
 
 theorem square_class_one [MyGroupClass α] (x : α) : square_class x = x := by sorry
 
+/- In Programming context, type classes are used to realize polymorphism -/
+#check ToString
+
+instance : ToString (Point ℕ) where
+  toString p := s!"x is {p.x} and y is {p.y}"
+
+instance [ToString α] : ToString (Point α) where
+  toString p := s!"x is {p.x} and y is {p.y}"
+
+instance : ToString (PositivePoint) where
+  toString p := s!"x is {p.x} and y is {p.y}"
+
+instance : ToString (MyGroup α) where
+  toString _ := "This is a user-defined group"
+
+/- Same function but triggered different realizations. This method allows you organize
+structures efficiently in large programs. -/
+#eval toString (Point.mk 1 2)
+#eval toString (PositivePoint.mk 1 2 (by simp) (by simp))
+#eval toString int_add_mygroup
+
+/-
+Now you have structures / type classes to construct new mathematic object. 
+How can you organize them neatly?
+Use sections and namespaces
+-/
+
+
+class ArithProg (a : ℕ → α) [AddCommGroup α] where
+  equal_diff : ∀ n, a (n + 2) - a (n + 1) = a (n + 1) - a n
+
+namespace ArithProg
+
+variable {α : Type} [AddCommGroup α]
+variable {a : ℕ → α} [inst : ArithProg a]
+
+local notation "d" => a 1 - a 0
+
+theorem comm_diff : ∀ n, a (n + 1) - a n = d := by
+  intro n
+  induction' n with k hk
+  · simp
+  rw [← hk]
+  exact inst.equal_diff k
+
+theorem formula : ∀ n, a n = a 0 + n • d := by
+  intro n
+  induction' n with k hk
+  · simp
+  rw [add_smul, ← add_assoc, ← hk, one_smul]
+  rw [← comm_diff k]
+  abel
+
+local notation "S" n:max => ∑ i ∈ Finset.range n, a i
+
+set_option diagnostics true
+
+theorem sum_formula : ∀ n, S n = n • a 0 + (n * (n - 1) / 2) • d := by
+  intro n
+  induction' n with k hk
+  · simp
+  rw [Finset.sum_range_succ, hk]
+  rw [formula (a := a) k]
+  sorry  
+
+end ArithProg
+
+open ArithProg
+
+def b (n : ℕ) : ℝ := n
+
+instance : ArithProg b where
+  equal_diff n := by simp [b]; norm_num
+
+#check formula (a := b)
+#check sum_formula (a := b)
 
