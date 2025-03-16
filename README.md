@@ -8,9 +8,9 @@ This course also featuring various LLM tools, such as LeanSearch, Auto-formalize
 
 ## Outline
 
-Chapter 1: Introduction and Basic Syntax
-Chapter 2: Useful Tactics
-Chapter 3: Structures and Organizations
+- Chapter 1: Introduction and Basic Syntax
+- Chapter 2: Useful Tactics
+- Chapter 3: Structures and Organizations
 
 ## References
 
