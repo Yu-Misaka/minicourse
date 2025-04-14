@@ -11,6 +11,7 @@ This course also featuring various LLM tools, such as LeanSearch, Auto-formalize
 - Chapter 1: Introduction and Basic Syntax
 - Chapter 2: Useful Tactics
 - Chapter 3: Structures and Organizations
+- Problems: High-school Level Problems to be solved in Lean
 
 ## References
 
