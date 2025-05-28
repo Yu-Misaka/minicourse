@@ -57,12 +57,12 @@ def set_B : Set ℕ := {2, 3}
 #eval finset_A ∪ finset_B
 def list_two : List ℕ := [1, 2]
 #eval list_two
--- #eval set_two -- This will not work.
+-- #eval set_A ∪ set_B -- This will not work.
 
 /- Define a function on natural number, it can also be interpreted
 as a series. -/
 def ai : ℕ → ℕ :=
-  fun x => 1 / (x + 3)
+  fun x ↦ 1 / (x + 3)
 
 /- A more common way is to use `()` to specify the parameter -/
 def f (x : ℕ) : ℕ :=
