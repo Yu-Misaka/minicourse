@@ -3,7 +3,9 @@ import Mathlib
 namespace Exercise_6245
 
 /-
-Let $F=\mathbb{Z}_{7}$ and let $p(x)=x^{3}-2$ and $q(x)=x^{3}+2$ be in $F[x]$. Show that $p(x)$ and $q(x)$ are irreducible in $F[x]$ and that the fields $F[x] /(p(x))$ and $F[x] /(q(x))$ are isomorphic.
+Let $F=\mathbb{Z}_{7}$ and let $p(x)=x^{3}-2$ and $q(x)=x^{3}+2$ be in $F[x]$.
+Show that $p(x)$ and $q(x)$ are irreducible in $F[x]$ and that the fields $F[x] /(p(x))$
+and $F[x] /(q(x))$ are isomorphic.
 -/
 
 local notation "F" => ZMod 7
@@ -23,27 +25,27 @@ lemma irr_p : Irreducible p := by
   refine (Polynomial.irreducible_iff_roots_eq_zero_of_degree_le_three ?_ ?_).2 ?_
   · rw [p_natDegree]; omega
   · rw [p_natDegree]
-  · refine Multiset.eq_zero_iff_forall_not_mem.mpr ?_
+  · refine Multiset.eq_zero_of_forall_notMem ?_
     intro a
     simp only [map_neg, mem_roots', ne_eq, IsRoot.def, eval_add, eval_pow, eval_X, eval_neg, eval_C,
       not_and]
     rintro -
     fin_cases a
-    all_goals simp only [Nat.reduceAdd, Fin.zero_eta, Fin.isValue, ne_eq, OfNat.ofNat_ne_zero,
-      not_false_eq_true, zero_pow, zero_add, neg_eq_zero, Fin.mk_one, one_pow, Fin.reduceFinMk]; decide
+    all_goals simp only [Nat.reduceAdd, Fin.zero_eta, Fin.isValue,
+      Fin.mk_one, Fin.reduceFinMk]; decide
 
 lemma irr_q : Irreducible q := by
   refine (Polynomial.irreducible_iff_roots_eq_zero_of_degree_le_three ?_ ?_).2 ?_
   · rw [q_natDegree]; omega
   · rw [q_natDegree]
-  · refine Multiset.eq_zero_iff_forall_not_mem.mpr ?_
+  · refine Multiset.eq_zero_of_forall_notMem ?_
     intro a
-    simp only [map_neg, mem_roots', ne_eq, IsRoot.def, eval_add, eval_pow, eval_X, eval_neg, eval_C,
-      not_and]
+    simp only [mem_roots', ne_eq, IsRoot.def, eval_add, eval_pow, eval_X,
+      eval_C, not_and]
     rintro -
     fin_cases a
-    all_goals simp only [Nat.reduceAdd, Fin.zero_eta, Fin.isValue, ne_eq, OfNat.ofNat_ne_zero,
-      not_false_eq_true, zero_pow, zero_add, neg_eq_zero, Fin.mk_one, one_pow, Fin.reduceFinMk]; decide
+    all_goals simp only [Nat.reduceAdd, Fin.zero_eta, Fin.isValue,
+      Fin.mk_one, Fin.reduceFinMk]; decide
 
 noncomputable section
 
@@ -79,10 +81,11 @@ instance fin₂ : Fintype (AdjoinRoot q) := by
   exact Fintype.ofFinite _
 
 def iso : (F[X] ⧸ Ideal.span {p}) ≃ₐ[F] (F[X] ⧸ Ideal.span {q}) := by
-  refine @FiniteField.algEquivOfCardEq (F[X] ⧸ Ideal.span {p}) fie₁ (Fintype.ofFinite _)
-    (F[X] ⧸ Ideal.span {q}) fie₂ (Fintype.ofFinite _) 7 _ _ _ ?_
+  refine @FiniteField.algEquivOfCardEq (F[X] ⧸ Ideal.span {p})
+    (F[X] ⧸ Ideal.span {q}) fie₁ fie₂ (Fintype.ofFinite _) (Fintype.ofFinite _)
+    7 _ _ _ ?_
   change Fintype.card (AdjoinRoot p) = Fintype.card (AdjoinRoot q)
-  rw [Module.card_fintype pb₁.basis, Module.card_fintype pb₂.basis]
+  erw [Module.card_fintype pb₁.basis, Module.card_fintype pb₂.basis]
   congr 1
   simp only [Fintype.card_fin]
   dsimp [pb₁, pb₂]
@@ -121,7 +124,7 @@ lemma normal : Normal F E where
     let _ := alg hdim
     -- The degree of the minimal polynomial of x over F is at most the dimension of E/F.
     have le_two : (minpoly F x).natDegree ≤ 2 :=
-      hdim ▸ @minpoly.natDegree_le F _ E _ _ x (findim hdim)
+      hdim ▸ @minpoly.natDegree_le F E _ _ _ (findim hdim) x _
     -- Since x is algebraic, it is integral over F.
     have integral : IsIntegral F x :=
       isAlgebraic_iff_isIntegral.mp <| Algebra.IsAlgebraic.isAlgebraic x
@@ -134,7 +137,7 @@ lemma normal : Normal F E where
     -- Case 1: Degree is 1.
     | 1 =>
       -- Polynomials of degree 1 always split.
-      exact splits_of_natDegree_eq_one (algebraMap F E) def_c.symm
+      exact Polynomial.Splits.map (Splits.of_natDegree_eq_one def_c.symm) (algebraMap F E)
     -- Case 2: Degree is 2.
     | 2 =>
       -- Since x is a root of its minimal polynomial, $(X - C x)$ divides $minpoly \ F \ x$
@@ -167,6 +170,7 @@ lemma normal : Normal F E where
       -- To show $minpoly \ F \ x$ splits, we need every irreducible factor
       -- $m$ over F to have degree 1 over E.
       -- Use the definition of `Splits`.
+      refine Polynomial.splits_iff_splits.2 ?_
       refine Or.intro_right _ ?_
       -- Let $m$ be an irreducible factor of $minpoly \ F \ x$ over F.
       rintro m hirr ⟨g, hm⟩
@@ -208,7 +212,7 @@ lemma normal : Normal F E where
       -- Case d = 2: m has degree 2.
       | 2 =>
         -- From $2 = deg(m) + deg(g)$, we get $2 = 2 + deg(g)$, so $deg(g) = 0$.
-        rw [self_eq_add_right] at hm_deg
+        rw [Nat.left_eq_add] at hm_deg
         -- If natDegree is 0, g is a non-zero constant $C l$.
         obtain ⟨l, hl⟩ := natDegree_eq_zero.1 hm_deg
         rw [← hl] at hm -- Substitute $g = C l$ into $hm$.
@@ -228,7 +232,7 @@ lemma normal : Normal F E where
         rw [mul_assoc, mul_assoc, ← C_mul, hb.1, C_1, mul_one] at hm
         -- Now $map \ m = (X - C x) * (f * C b)$.
         -- If $map \ m$ were irreducible over E, then one factor must be a unit.
-        have := hirr.2 (X - C x) (f * C b) hm.symm
+        have := hirr.2 hm.symm
         -- Check if $X - C x$ is a unit. It's not.
         have not_unit₁ : ¬ IsUnit (X - C x) := not_isUnit_X_sub_C x
         -- Check if $f * C b$ is a unit.

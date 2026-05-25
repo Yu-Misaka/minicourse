@@ -1,4 +1,7 @@
-import Mathlib
+import Mathlib.Data.Real.Basic
+import Mathlib.Tactic.Linarith.Lemmas
+import Mathlib.Tactic.Ring.Basic
+import Mathlib.Tactic.Linarith.Frontend
 
 example (x : ℝ) : x + 0 = x := by
   simp only [add_zero]

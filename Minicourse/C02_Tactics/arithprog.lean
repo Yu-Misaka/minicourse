@@ -1,5 +1,4 @@
 import Mathlib
-import Reap
 
 class ArithProg (a : ℕ → α) [AddCommGroup α] where
   equal_diff : ∀ n, a (n + 2) - a (n + 1) = a (n + 1) - a n

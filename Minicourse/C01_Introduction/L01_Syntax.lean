@@ -1,9 +1,6 @@
-import Mathlib.Analysis.RCLike.Basic
-import Mathlib.Data.Complex.Trigonometric
--- import ReaperTac
+import Mathlib.Analysis.Complex.Trigonometric
 
-open Nat
-/-
+/-!
 # Dependent Type theory
 
 A framework for formalizing mathematics and logic reasoning.
@@ -20,6 +17,9 @@ To evaluate your expression, use `#eval`
 When you input the value of an expression, Lean will try
 to infer the type of the value.
 -/
+
+open Nat
+
 #check 2 + 2
 #check 2 + 2.0
 #eval 2 + 2
@@ -170,4 +170,5 @@ theorem cos_sub_cos_of_cos_add_cos
 cos (α - β) = -3 * m :=  by sorry
 
 open BigOperators Real Nat Topology
-theorem cos_sub_of_cos_add_eq_m {α β : ℝ} (m : ℝ) (h : Real.cos (α + β) = m) (h' : Real.tan α * Real.tan β = 2) : Real.cos (α - β) = -3 * m :=  by sorry
+theorem cos_sub_of_cos_add_eq_m {α β : ℝ} (m : ℝ) (h : Real.cos (α + β) = m)
+  (h' : Real.tan α * Real.tan β = 2) : Real.cos (α - β) = -3 * m := by sorry

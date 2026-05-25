@@ -14,7 +14,6 @@ Given cos(α+β)=m, tan(α)tan(β)=2, show that cos(α-β)=-3m
 -/
 import Mathlib.Analysis.RCLike.Basic
 import Mathlib.Analysis.Complex.Trigonometric
-import Reap
 
 open Real
 

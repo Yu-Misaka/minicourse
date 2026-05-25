@@ -4,7 +4,6 @@ logic structure, starting from logical connectors and quantifiers.
 -/
 import Mathlib.Analysis.Normed.Field.Basic
 import Mathlib.Data.Real.StarOrdered
-import Reap
 
 /- The classical definitiion of limit in `ε-δ` language. -/
 def epsilon_delta_limit (f : ℝ → ℝ) (l : ℝ) (a : ℝ) : Prop :=
@@ -164,6 +163,7 @@ def HasUpperBound (f : ℝ → ℝ) : Prop := ∃ M : ℝ, ∀ x : ℝ, f x ≤ 
 Generally you if you want to prove `A → B`, you can prove `¬B → ¬A`
 instead. -/
 theorem id_no_upper_bound : ¬ HasUpperBound (fun x => x) := by
+  change HasUpperBound (fun x => x) → False
   dsimp [HasUpperBound]
   contrapose!
   intro h M
