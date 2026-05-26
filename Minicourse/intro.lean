@@ -106,3 +106,7 @@ example : ∀ a : H, ∀ b : C, mul_2 a b = mul_3 a b :=
 
 -- max |x₁ - y₁| |x₂ - y₂|
 #synth Dist (ℝ × ℝ)
+
+#check Module.finrank
+#check Cardinal.toNat
+#check Real.log
