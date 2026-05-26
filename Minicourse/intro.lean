@@ -103,3 +103,6 @@ example : mul_2 (H := H) (C := C) = mul_3 := by
 
 example : ∀ a : H, ∀ b : C, mul_2 a b = mul_3 a b :=
   fun _ b ↦ (Algebra.smul_def _ b).symm
+
+-- max |x₁ - y₁| |x₂ - y₂|
+#synth Dist (ℝ × ℝ)
