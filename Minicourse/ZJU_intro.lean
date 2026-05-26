@@ -10,6 +10,8 @@ import Mathlib
 
 /-! # Lean项目的基本管理
 
+**lake和elan**
+
 **拿到一个lean项目，怎么运行**
 
 1. 项目根目录里必须有：
