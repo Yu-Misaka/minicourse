@@ -28,8 +28,8 @@ lemma sorry4 : 1 = 2 := sorryAx _ true
 set_option warn.sorry false in
 lemma sorry5 : 1 = 2 := sorry
 
--- lemma sorry6 : 1 = 2 := by
---   apply?
+lemma sorry6 : 1 = 2 := by
+  apply?
 
 -- # print axioms
 
