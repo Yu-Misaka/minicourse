@@ -1,4 +1,5 @@
 import Mathlib
+-- import Minicourse.ZJL_errors
 
 /-!
 # Lean x LLM pipeline: 看报错，理解模型在做什么
@@ -280,6 +281,9 @@ example : useFoo 1 = 11 := by
 #check (1 : ℚ) / 3
 #eval (1 : ℚ) / 3
 
+example : 1 + 1 = 2 := by
+  omega
+
 example : (1 : ℚ) / 3 + 1 / 3 = 2 / 3 := by
   norm_num
 
@@ -313,7 +317,14 @@ variable (a b c : Nat)
 > 模型有“局部动作幻觉”，以为当前目标长成了某个样子。
 -/
 
-example : a + b = b + a := by
+def d := c
+
+example : d + b = b + c := by
+  sorry
+
+example : d c + b = b + c := by
+  -- rw [Nat.add_comm]
+  unfold d
   rw [Nat.add_comm]
 
 -- 取消注释看看：
@@ -557,7 +568,7 @@ example (h : f x = g x) : f x = g x := by
 -/
 
 example (m n : Nat) (h : m = n) : m + 1 = n + 1 := by
-  simp [h]
+  simpa
 
 end RepairMoves
 
