@@ -38,3 +38,7 @@ lemma sorry6 : 1 = 2 := by
 #check Quot.sound
 
 #print axioms sorry5
+
+set_option pp.all true
+
+#check sorry5
