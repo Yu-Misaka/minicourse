@@ -6,8 +6,8 @@ import Mathlib
 
 -- example : 1 = 2 := by rfl
 
--- `lake env lean Minicourse/ZJU_hack.lean`
--- `lake build Minicourse.ZJU_hack`
+-- `lake env lean Minicourse/1017_hack.lean`
+-- `lake build Minicourse.1017_hack`
 -- `lake exe mk_all`
 
 -- # lake build的消息等级
@@ -27,6 +27,9 @@ lemma sorry4 : 1 = 2 := sorryAx _ true
 
 set_option warn.sorry false in
 lemma sorry5 : 1 = 2 := sorry
+
+#print axioms sorry5
+
 
 lemma sorry6 : 1 = 2 := by
   apply?
